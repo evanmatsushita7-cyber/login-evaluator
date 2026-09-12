@@ -21,29 +21,32 @@ def readfiles():
         exit()
 
 def processlines(text):
+    ip_counts = {}
+    ip_usernames = {}
+    ip_timestamp = {}
     for line in text.splitlines():
         if "for" in line and "from" in line:
             parts = line.split(ip_precursor_word, 1)
-            result = parts[1].strip()
+            ip = parts[1].strip()
             uparts1 = line.split(username_precursor_word, 1)[1]
             uparts2 = uparts1.split(ip_precursor_word, 1)[0]
-            usernames = uparts2.strip()
+            username = uparts2.strip()
             splitline = line.split()
             timestamp = splitline[2]
             timestamp_hour = timestamp[:2]       
-            if result in ip_timestamp:
-                ip_timestamp[result].add(timestamp_hour)
+            if ip in ip_timestamp:
+                ip_timestamp[ip].add(timestamp_hour)
             else:
-                ip_timestamp[result] ={timestamp_hour}
+                ip_timestamp[ip] ={timestamp_hour}
             if "Failed password" in line:
-                if result in ip_usernames:
-                    ip_usernames[result].add(usernames)
+                if ip in ip_usernames:
+                    ip_usernames[ip].add(username)
                 else:
-                    ip_usernames[result] = {usernames}
-                if result in ip_counts:
-                    ip_counts[result] = ip_counts[result] + 1
+                    ip_usernames[ip] = {username}
+                if ip in ip_counts:
+                    ip_counts[ip] = ip_counts[ip] + 1
                 else:
-                    ip_counts[result] = 1
+                    ip_counts[ip] = 1
     return ip_counts, ip_usernames, ip_timestamp        
 
 def display_ip_counts_and_names(ip_counts, ip_usernames):
