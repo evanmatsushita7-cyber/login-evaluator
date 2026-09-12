@@ -11,10 +11,6 @@ args = parse_arguments()
 ip_precursor_word = ("from")
 username_precursor_word = ("for")
 
-ip_counts = {}
-ip_usernames = {}
-ip_timestamp = {}
-
 def readfiles():
     try:
         with open(args.file) as f:
